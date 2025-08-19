@@ -16,9 +16,9 @@ class ITaskRepository(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    async def update(self, task_id: str, owner_id: int, task: dict):
+    async def update(self, task_id: str, owner_id: str, task: dict):
         raise NotImplementedError
 
     @abstractmethod
-    async def delete(self, task_id: str, owner_id: int):
+    async def delete(self, task_id: str, owner_id: str):
         raise NotImplementedError

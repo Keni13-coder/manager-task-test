@@ -20,7 +20,7 @@ services:
       dockerfile: api.dockerfile
       target: production
     ports:
-      - "8080:8080"
+      - "8080:8000"
     volumes:
       - .:/app
     depends_on:

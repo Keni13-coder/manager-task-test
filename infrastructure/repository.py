@@ -20,13 +20,13 @@ class MongoTaskRepository(ITaskRepository):
         except PyMongoError:
             raise 
 
-    async def update(self, task_id: str, owner_id: int, task: dict) -> None:
+    async def update(self, task_id: str, owner_id: str, task: dict) -> None:
         try:
             self._collection.update_one({'task_id': task_id, 'owner_id': owner_id}, {'$set': task})
         except PyMongoError:
             raise
 
-    async def delete(self, task_id: str, owner_id: int) -> None:
+    async def delete(self, task_id: str, owner_id: str) -> None:
         try:
             self._collection.delete_one({'task_id': task_id, 'owner_id': owner_id})
         except PyMongoError:

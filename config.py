@@ -1,7 +1,8 @@
 from typing import Optional
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
-
+from loguru import logger
+import sys, os
 
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", extra='ignore')
@@ -11,6 +12,7 @@ class Settings(BaseSettings):
     REDIS_URI: str
     DB_NAME: str
     DB_COLLECTION: Optional[str] = None
+    ALLOWED_HOSTS: list[str] = ['localhost:3000']
     
     @property
     def redis_uri(self) -> str:
@@ -30,6 +32,28 @@ class Settings(BaseSettings):
     def db_collection(self) -> Optional[str]:
         if self.DB_COLLECTION:
             return self.DB_COLLECTION
-        
 
+def init_logger():     
+    logger.add(
+        sink=sys.stdout,
+        level="DEBUG",
+        format="{time:YYYY-MM-DD HH:mm:ss} | {level} | {name}:{function}:{line} - {message}",
+        )
+        
+    logger.add(
+        sink=os.path.join("logs", "app_{time:YYYY-MM-DD}.log"),
+        rotation="1 day",
+        retention="7 days",
+        level="INFO",
+        format="{time:YYYY-MM-DD HH:mm:ss} | {level} | {name}:{function}:{line} - {message}",
+    )
+
+    logger.add(
+        sink=os.path.join("logs", "errors_{time:YYYY-MM-DD}.log"),
+        level="ERROR",
+        format="{time:YYYY-MM-DD HH:mm:ss} | {level} | {name}:{function}:{line} - {message}",
+        rotation="1 day"
+    )
+    
 settings = Settings()
+init_logger()
