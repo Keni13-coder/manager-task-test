@@ -1,0 +1,19 @@
+[project]
+name = "manager-task-test"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "fastapi>=0.116.1",
+    "loguru>=0.7.3",
+    "motor>=3.7.1",
+    "pydantic-settings>=2.10.1",
+    "pytest>=8.4.1",
+    "pytest-asyncio>=1.1.0",
+    "redis>=6.4.0",
+    "uvicorn>=0.35.0",
+]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"

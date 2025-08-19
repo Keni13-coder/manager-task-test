@@ -1,0 +1,60 @@
+networks:
+  manager_task_network:
+    driver: bridge
+    name: ${PROJECT_NAME}_network
+
+x-networks-settings: &networks-settings
+  env_file:
+    - .env
+  networks:
+    - manager_task_network
+  
+  
+
+services:
+  api:
+    <<: *networks-settings
+    container_name: ${PROJECT_NAME}_api
+    build:
+      context: .
+      dockerfile: api.dockerfile
+      target: production
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/app
+    depends_on:
+      - db
+      - redis
+
+  api-test:
+    <<: *networks-settings
+    container_name: ${PROJECT_NAME}_api-test
+    build:
+      context: .
+      dockerfile: api.dockerfile
+      target: tests
+    volumes:
+      - .:/app
+  
+  db:
+    <<: *networks-settings
+    image: mongo:latest
+    container_name: ${PROJECT_NAME}_db
+    expose:
+      - "27017"
+    volumes:
+      - db-data:/data
+    
+  redis:
+    <<: *networks-settings
+    image: redis:latest
+    container_name: ${PROJECT_NAME}_redis
+    expose:
+      - "6379"
+    volumes:
+      - redis-data:/data
+
+volumes:
+  db-data:
+  redis-data:

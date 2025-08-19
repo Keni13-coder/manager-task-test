@@ -1,0 +1,16 @@
+
+
+async def create():
+    ...
+
+async def get():
+    ...
+
+async def get_list():
+    ...
+
+async def update():
+    ...
+
+async def delete():
+    ...
