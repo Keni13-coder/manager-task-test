@@ -38,7 +38,8 @@ async def update(
     repository: ITaskRepository
     ):
     try:
-        await repository.update(command.task_id, command.owner_id, asdict(command))
+        payload = {k:v for k,v in asdict(command).items() if v is not None}
+        await repository.update(command.task_id, command.owner_id, payload)
         return command.task_id
     except Exception:
         logger.error('Failed to update task')
